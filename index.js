@@ -22,6 +22,16 @@ http
 
 
 
+
+    var Airtable = require('airtable');
+    var base = new Airtable({apiKey: 'YOUR_API_KEY'}).base('app5zHQUbHNdQiFsI');
+
+
+
+
+
+
+
     if (Object.keys(queryObject).length) {
       // var params = parseJwt(queryObject["email"]);
       console.log(params);
@@ -30,10 +40,28 @@ http
       var email = JSON.parse(params)["email"];
 
       if (checkEmail(email)) {
-        res.writeHead(301,
-          {Location: `https://shop.demarochome.com/?USER=${email}`}
-        );
-        res.end(`${ email} is authorized`);
+        // res.writeHead(301,
+        //   {Location: `https://shop.demarochome.com/?USER=${email}`}
+        // );
+        // res.end(`${ email} is authorized`);
+
+
+        base('Requests').create([
+          {
+            "fields": {
+              "email": email,
+            }
+          },
+        ], function(err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function (record) {
+            console.log(record.getId());
+          });
+        });
+
       } else {
         res.writeHead(200, { "Content-Type": "text/html"});
         res.end(`${email} is NOT authorized`);
