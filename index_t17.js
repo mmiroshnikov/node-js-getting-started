@@ -14,24 +14,41 @@ http
     }
 
 
+
+
+    let whiteListed = [
+      'harley.homewood@team17.com',
+      'lakhvir.takhar@team17.com',
+      'mich.davis@team17.com',
+      'phil.harper@team17.com',
+      'rossfairhurst17@gmail.com',
+      'stephan@weareframework.co.uk',
+      'sam.bishop@team17.com',
+      'mikoza@gmail.com',
+    ]
+
     checkEmail = (e) => {
 
-      return true
+      var email = e.split('@')[0].replace('.', '') + '@' + e.split('@')[1];
+
+      if (email.split("@").length === 2 && email.split("@")[1] === "xsolla.com") return true;
+
+      if (whiteListed.filter(one=> one === email.toLowerCase()).length === 1) return true
     }
 
 
 
 
     if (Object.keys(queryObject).length) {
-      // var params = parseJwt(queryObject["email"]);
+      var params = parseJwt(queryObject["token"]);
       console.log(params);
-      console.log(queryObject["email"]);
+      console.log(queryObject["token"]);
 
       var email = JSON.parse(params)["email"];
 
       if (checkEmail(email)) {
         res.writeHead(301,
-          {Location: `https://shop.demarochome.com/?USER=${email}`}
+          {Location: `https://xsolla-game-store.netlify.app/?APIKEY=&USER=${email}`}
         );
         res.end(`${ email} is authorized`);
       } else {
@@ -40,7 +57,7 @@ http
       }
     } else {
       res.writeHead(301,
-        {Location: `https://shop.demarochome.com/logout`}
+        {Location: `https://xsolla-game-store.netlify.app/logout`}
       );
       res.end("Unauthorized");
     }
