@@ -34,6 +34,8 @@ http
     }
 
 
+
+
     if (Object.keys(queryObject).length) {
       var params = parseJwt(queryObject["token"]);
       console.log(params);
